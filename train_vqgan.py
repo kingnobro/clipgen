@@ -40,7 +40,8 @@ embed_dim = 256
 
 dataset_name = args.ds
 batch_size = args.bs
-epochs = 800
+epochs = 100
+# epochs = 800
 num_workers = 8
 base_lr = 4.5e-6
 save_path = Path(f"output/vqgan/{dataset_name}")

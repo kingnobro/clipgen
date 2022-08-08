@@ -7,7 +7,7 @@ from .statistic import *
 # -------------------
 from typing import Callable, Optional
 
-from .base import (
+from base import (
     BaseDataset,
     get_data_dir
 )
