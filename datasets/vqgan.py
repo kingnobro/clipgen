@@ -1,5 +1,5 @@
 import hfai
-import pandas as pd
+import os
 from torchvision import transforms
 from .statistic import *
 
@@ -7,8 +7,6 @@ from .statistic import *
 # -------------------
 from typing import Callable, Optional
 
-import pickle
-from ffrecord import FileReader
 from .base import (
     BaseDataset,
     get_data_dir
@@ -25,9 +23,9 @@ def create_transform(split):
 
     transform = transforms.Compose([
         transforms.Resize(256),
-        crop,
+        # crop,
         transforms.ToTensor(),
-        transforms.Normalize(mean=mean, std=std),
+        # transforms.Normalize(mean=mean, std=std),
     ])
 
     return transform
@@ -56,39 +54,29 @@ class IconNet(BaseDataset):
         self,
         split: str,
         transform: Optional[Callable] = None,
-        check_data: bool = False
     ) -> None:
         super(IconNet, self).__init__()
 
         assert split in ["train", "valid"]
-        self.split = split
         self.transform = transform
         # 当前目录
         data_dir = get_data_dir()
         # 目录拼接
-        self.data_dir = data_dir / "IconNet" / f"{split}"
-        # self.fname = self.data_dir / f"{split}.ffr"
-        self.reader = FileReader(self.data_dir, check_data)
+        self.path = data_dir / "IconNet" / f"processed_{split}"
+        self.files = sorted([os.path.join(self.path, x) for x in os.listdir(self.path) if x.endswith(".png")])
 
-        # self.meta = pd.read_csv(self.data_dir / "IconNet" / f"{split}.csv", usecols=[0, 1])
+        # self.meta = pd.read_csv(self.path / "IconNet" / f"{split}.csv", usecols=[0, 1])
 
     def __len__(self):
-        return self.reader.n
+        return len(self.files)
 
     def __getitem__(self, indices):
-        imgs_bytes = self.reader.read(indices)
-        samples = []
-        for i, bytes_ in enumerate(imgs_bytes):
-            img = pickle.loads(bytes_).convert("RGB")
-            samples.append(img)
-
+        fnames = [self.files[idx] for idx in indices]
         transformed_samples = []
-
-        for img in samples:
-            if self.transform:
-                img = self.transform(img)
-            transformed_samples.append(img)
-
+        for fname in fnames:
+            im = Image.open(fname)
+            im = self.transform(im)
+            transformed_samples.append(im)
         return transformed_samples
 
 
