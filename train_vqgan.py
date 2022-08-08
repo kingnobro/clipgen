@@ -291,5 +291,5 @@ def main(local_rank):
 
 
 if __name__ == "__main__":
-    ngpus = 2
+    ngpus = 4
     torch.multiprocessing.spawn(main, args=(), nprocs=ngpus)

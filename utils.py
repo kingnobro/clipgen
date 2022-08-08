@@ -125,7 +125,7 @@ def init_dist(local_rank):
     hosts = int(os.environ["WORLD_SIZE"])  # number of nodes
     rank = int(os.environ["RANK"])  # node id
     # gpus = torch.cuda.device_count()  # gpus per node
-    gpus = 2
+    gpus = 4
 
     dist.init_process_group(
         backend="nccl", init_method=f"tcp://{ip}:{port}", world_size=hosts * gpus, rank=rank * gpus + local_rank

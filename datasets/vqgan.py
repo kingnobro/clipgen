@@ -2,6 +2,7 @@ import hfai
 import os
 from torchvision import transforms
 from .statistic import *
+from PIL import Image
 
 # 自定义 Dataset 所需的头文件
 # -------------------
