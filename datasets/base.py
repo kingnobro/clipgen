@@ -5,7 +5,7 @@ from pathlib import Path
 from ffrecord.torch import Dataset, DataLoader
 
 DATA_DIR = None
-DEFAULT_DATA_DIR = Path("/public_dataset/1/ffdataset")
+DEFAULT_DATA_DIR = Path("./")
 
 
 def set_data_dir(path: Union[str, os.PathLike]) -> None:

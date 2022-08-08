@@ -291,5 +291,5 @@ def main(local_rank):
 
 
 if __name__ == "__main__":
-    ngpus = 1
+    ngpus = torch.cuda.device_count()
     torch.multiprocessing.spawn(main, args=(), nprocs=ngpus)
