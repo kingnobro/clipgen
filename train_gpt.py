@@ -133,7 +133,7 @@ def train(dataloader, gpt, vqgan, clip, optimizer, scheduler, scaler, epoch, sta
 
         # save checkpoint if going to suspend
         rank = dist.get_rank()
-        if rank == 0 and hfai.receive_suspend_command():
+        if rank == 0 and hfai.client.receive_suspend_command():
             state = {
                 "model": gpt.module.state_dict(),
                 "optimizer": optimizer.state_dict(),
