@@ -117,7 +117,7 @@ def train(loader, model, lpips, opt_g, opt_d, epoch, local_rank, start_step, bes
 
         # save checkpoint if going to suspend
         rank = dist.get_rank()
-        if rank == 0 and hfai.receive_suspend_command():
+        if rank == 0 and hfai.client.receive_suspend_command():
             state = {
                 "model": model.module.state_dict(),
                 "opt_g": opt_g.state_dict(),
